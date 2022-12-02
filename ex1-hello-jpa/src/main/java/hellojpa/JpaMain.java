@@ -31,11 +31,26 @@ public class JpaMain {
             /*Member findMember = em.find(Member.class, 1L);
             findMember.setName("HelloJPA");*/
 
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+            // JPQL로 쿼리를 직접 날려서 List로 Member 객체 리스트 가져옴
+            /*List<Member> result = em.createQuery("select m from Member as m", Member.class)
                     .getResultList();
             for (Member member : result) {
                 System.out.println("member.name = " + member.getName());
-            }
+            }*/
+
+            /*// 비영속
+            Member member = new Member();
+            member.setId(160L);
+            member.setName("B");
+            // 영속
+            System.out.println("===== BEFORE =====");
+            em.persist(member);
+            System.out.println("===== AFTER =====");*/
+
+            Member member = em.find(Member.class, 150L);
+            member.setName("zzzzzz");
+            System.out.println("--------------------");
+
 
             /*
             엔티티 매니저 팩토리는 하나만 생성 후 앱 전체에서 공유
