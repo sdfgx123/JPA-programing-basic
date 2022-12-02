@@ -47,10 +47,24 @@ public class JpaMain {
             em.persist(member);
             System.out.println("===== AFTER =====");*/
 
-            Member member = em.find(Member.class, 150L);
+            /*Member member = em.find(Member.class, 150L);
             member.setName("zzzzzz");
-            System.out.println("--------------------");
+            System.out.println("--------------------");*/
 
+            /*Member member = new Member(200L, "member200");
+            em.persist(member);
+            // flush를 통해 DB에 쿼리가 즉시 나가게 됨
+            em.flush();
+            System.out.println("---------------------");*/
+
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAA");
+            // detach 메서드를 통해 member 객체를 영속성 컨텍스트에서 제외함 >  더 이상 commit이 일어나지 않음
+            //em.detach(member);
+            // clear 하면 영속성 컨텍스트를 통으로 다 날려버림, 즉 1차 캐시를 초기화함
+            em.clear();
+            Member member2 = em.find(Member.class, 150L);
+            System.out.println("----------------");
 
             /*
             엔티티 매니저 팩토리는 하나만 생성 후 앱 전체에서 공유
