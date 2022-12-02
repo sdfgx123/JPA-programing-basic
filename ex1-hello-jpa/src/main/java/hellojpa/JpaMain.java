@@ -2,20 +2,53 @@ package hellojpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
-        Member member = new Member();
 
-        member.setId(1L);
-        member.setName("HelloA");
+        EntityTransaction tx = em.getTransaction();
+        tx.begin(); // DB transaction을 시작함
 
-        em.persist(member);
-        em.close();
+        // em은 정말 쉽게 말해서, DB connection 하나 받았다고 생각하면 됨
+        // 이게 정석 코드 > try catch 문에 트랜잭션을 집어넣음
+        try {
+            /*Member member = new Member();
+            member.setId(2L);
+            member.setName("HelloB");
+            em.persist(member);*/
+
+            /*Member findMember = em.find(Member.class, 1L);
+            System.out.println("findMember.id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getName());
+            */
+
+            /*Member findMember = em.find(Member.class, 1L);
+            findMember.setName("HelloJPA");*/
+
+            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+                    .getResultList();
+            for (Member member : result) {
+                System.out.println("member.name = " + member.getName());
+            }
+
+            /*
+            엔티티 매니저 팩토리는 하나만 생성 후 앱 전체에서 공유
+            엔티티 매니저는 쓰레드 간에 공유 X > 사용하고 버려야 함
+            JPA의 모든 데이터 변경은 트랜잭션 안에서 실행
+             */
+
+            tx.commit(); // commit해서 반영
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
         emf.close();
     }
 }
