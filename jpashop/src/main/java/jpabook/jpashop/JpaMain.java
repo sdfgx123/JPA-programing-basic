@@ -22,6 +22,7 @@ public class JpaMain {
             Long memberId = order.getMemberId();
             Member member = em.find(Member.class, memberId);*/
 
+            Order order = em.find(Order.class, 1L);
             Member findMember = order.getMember();
 
             tx.commit();
