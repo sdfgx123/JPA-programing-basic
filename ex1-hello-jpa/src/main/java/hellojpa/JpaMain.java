@@ -71,8 +71,6 @@ public class JpaMain {
 
             em.persist(member);*/
 
-
-
             /*
             엔티티 매니저 팩토리는 하나만 생성 후 앱 전체에서 공유
             엔티티 매니저는 쓰레드 간에 공유 X > 사용하고 버려야 함
@@ -92,12 +90,18 @@ public class JpaMain {
             em.flush(); // 영속성 컨텍스트에 있는 것들 다 DB에 쿼리 날림 > 싱크 맞춤
             em.clear(); // 영속성 컨텍스트 초기화
 
-            // 객체지향의 지향성과 맞지 않음, 연관관계가 없기 때문임
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
+
+            /*// 객체지향의 지향성과 맞지 않음, 연관관계가 없기 때문임
             Member findMember = em.find(Member.class, member.getId());
 //            Long findTeamId = findMember.getTeamId();
 //            Team findTeam = em.find(Team.class, findTeamId);
             Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            System.out.println("findTeam = " + findTeam.getName());*/
 
             tx.commit(); // commit해서 반영
         } catch (Exception e) {
