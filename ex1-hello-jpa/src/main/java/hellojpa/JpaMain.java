@@ -83,18 +83,25 @@ public class JpaMain {
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
-//            member.setTeamId(team.getId());
             em.persist(member);
+
+//            team.getMembers().add(member);
+            team.addMember(member);
 
             em.flush(); // 영속성 컨텍스트에 있는 것들 다 DB에 쿼리 날림 > 싱크 맞춤
             em.clear(); // 영속성 컨텍스트 초기화
 
-            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+            for (Member m : members) {
+                System.out.println("** m = " + m.getUsername());
+            }
+
+            /*Member findMember = em.find(Member.class, member.getId());
             List<Member> members = findMember.getTeam().getMembers();
             for (Member m : members) {
                 System.out.println("m = " + m.getUsername());
-            }
+            }*/
 
             /*// 객체지향의 지향성과 맞지 않음, 연관관계가 없기 때문임
             Member findMember = em.find(Member.class, member.getId());
