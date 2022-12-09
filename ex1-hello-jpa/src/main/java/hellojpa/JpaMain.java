@@ -77,26 +77,6 @@ public class JpaMain {
             JPA의 모든 데이터 변경은 트랜잭션 안에서 실행
              */
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("member1");
-            em.persist(member);
-
-//            team.getMembers().add(member);
-            team.addMember(member);
-
-            em.flush(); // 영속성 컨텍스트에 있는 것들 다 DB에 쿼리 날림 > 싱크 맞춤
-            em.clear(); // 영속성 컨텍스트 초기화
-
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-            for (Member m : members) {
-                System.out.println("** m = " + m.getUsername());
-            }
-
             /*Member findMember = em.find(Member.class, member.getId());
             List<Member> members = findMember.getTeam().getMembers();
             for (Member m : members) {
@@ -109,6 +89,16 @@ public class JpaMain {
 //            Team findTeam = em.find(Team.class, findTeamId);
             Team findTeam = findMember.getTeam();
             System.out.println("findTeam = " + findTeam.getName());*/
+
+            Movie movie = new Movie();
+            movie.setDirector("aaa");
+            movie.setActor("bbb");
+            movie.setName("test movie");
+            movie.setPrice(10000);
+            em.persist(movie);
+
+            em.flush();
+            em.clear();
 
             tx.commit(); // commit해서 반영
         } catch (Exception e) {
