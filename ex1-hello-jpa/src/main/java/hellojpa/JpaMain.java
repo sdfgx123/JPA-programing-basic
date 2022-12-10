@@ -90,15 +90,17 @@ public class JpaMain {
             Team findTeam = findMember.getTeam();
             System.out.println("findTeam = " + findTeam.getName());*/
 
-            Movie movie = new Movie();
+            /*Movie movie = new Movie();
             movie.setDirector("aaa");
             movie.setActor("bbb");
             movie.setName("test movie");
             movie.setPrice(10000);
-            em.persist(movie);
+            em.persist(movie);*/
 
-            em.flush();
-            em.clear();
+            Member member = em.find(Member.class, 1L);
+            System.out.println("member 확인용 " + member);
+            printMember(member);
+            printMemberAndTeam(member);
 
             tx.commit(); // commit해서 반영
         } catch (Exception e) {
@@ -107,5 +109,17 @@ public class JpaMain {
             em.close();
         }
         emf.close();
+    }
+
+    private static void printMember(Member member) {
+        System.out.println("member : " + member.getUsername());
+    }
+
+    private static void printMemberAndTeam(Member member) {
+        String username = member.getUsername();
+        System.out.println("username : " + username);
+
+        Team team = member.getTeam();
+        System.out.println("Team : " + team.getName());
     }
 }
