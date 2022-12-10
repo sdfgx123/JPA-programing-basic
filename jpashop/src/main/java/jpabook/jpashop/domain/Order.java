@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Table(name = "ORDERS")
 public class Order extends BaseEntity {
@@ -16,15 +19,18 @@ public class Order extends BaseEntity {
 //    private Long memberId; // 주문자 확인용
 
     // 지금 이게 단방향으로 설계한 거임
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToOne
+    /**
+     * Cascade 옵션 All로 줌으로 인해, persist 할 때, Order 한 번만 해주면 됨
+     */
+    @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "DELIVERY_ID")
     private Delivery delivery;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate; // 주문일자
