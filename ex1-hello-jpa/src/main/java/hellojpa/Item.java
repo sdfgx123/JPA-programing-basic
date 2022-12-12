@@ -12,6 +12,11 @@ public class Item {
     private String name;
     private int price;
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public Long getId() {
         return id;
     }
